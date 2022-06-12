@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> Web Study #4 - Regular Expression </title>
+		<style>*{font-size:30px;}input{border-radius:3px;width:500px;}</style>
+	</head>
+	<body>
+		<h1> Web Study #4 - Regular Expression </h1>
+		email regex<br><input type="text" id="text" style="border: 7px solid red;"/>
+	</body>
+</html>
+<script>
+	function check() {
+		var text = document.getElementById("text");
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text.value)) {
+			text.style = "border: 7px solid green;";
+		}
+		else {
+			text.style = "border: 7px solid red;";
+		}
+	}
+	setInterval(check, 100);
+</script>

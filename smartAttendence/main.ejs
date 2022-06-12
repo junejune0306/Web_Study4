@@ -1,0 +1,48 @@
+<script> alert('출석번호: <%= number %>'); </script>
+<html>
+        <head>
+				<meta charset="utf-8">
+                <title> Web4 smartAttendence </title>
+				<style>
+					* {
+						font-size: 30px;
+						font-weight: bold;
+					}
+					body {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						background-color: rgb(210,255,255);
+					}
+					div {
+						display: inline-block;
+					}
+					input {
+						width: 290px;
+						height: 90px;
+						padding: 20px 30px;
+						margin: 10px;
+					}
+					input[type=text] {
+						background-color: rgba(255,255,255,0.9);
+						border: 2px solid #ccc;
+						border-radius: 15px;
+						text-align: center;
+					}
+					input[type=submit] {
+						background-color: rgb(63,72,204);
+						border-radius: 3px;
+						border: none;
+					}
+				</style>
+        </head>
+        <body><center>
+			<h1>Smart Attendence</h1>
+			<div>
+				<form method="post" action="">
+					<input type="text" name="input" placeholder="출석번호 입력"/><br>
+					<input type="submit" value="제출"/>
+				</form>
+			</div>
+        </center></body>
+</html>

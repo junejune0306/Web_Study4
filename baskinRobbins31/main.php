@@ -3,73 +3,54 @@
 	if (!isset($_SESSION['start'])) { //default setting
 		$_SESSION['start'] = 0;
 		$_SESSION['count'] = 0;
-		$_SESSION['save'] = array(0, 0);
-		$ans = 0;
-		$f = 0;
+		$_SESSION['ans'] = 0; //cpu answer
+		$_SESSION['f'] = 0; //flag
+		if (!isset($_SESSION['save'])) $_SESSION['save'] = array(0, 0, 0, 0); //count, ans, f, time
 	}
-	else {
-		if ($_POST['input']) {
-			$_SESSION['start'] = 1;
-		}
-		$_SESSION['count'] += $_POST['input'];
-		if ($_SESSION['count'] > 30) { //if lose
-			$f = 2;
-		}
-		else { //if not lose
-			if ($_SESSION['count'] % 4 == 2) { //claculate cpu answer
-				$ans = $_SESSION['count'] % 3 + 1;
-			}
-			else {
-				$ans = 4 - ($_SESSION['count'] + 2) % 4;
-			}
-			if ($_SESSION['count'] + $ans > 30) { //if win
-				$f = 1;
-			}
-		}
-	}
+	$count = $_SESSION['count'];
+	$ans = $_SESSION['ans'];
+	$f = $_SESSION['f'];
 ?>
 <html>
 	<head>
-		<meta method="utf-8">
+		<meta charset="utf-8">
 		<title>Baskin Robbins 31</title>
+		<link rel="stylesheet" href="./main.css">
 	<head>
 	<body>
 		<form method="post" action="./reset.php">
-			<input type="submit" value="reset">
+			<input id="resetbtn" class="btn" type="submit" value="Reset">
 		</form>
 		<form method="post" action="./save.php">
-			<input type="hidden" name="ans" value="<?php echo $ans; ?>">
-			<input type="submit" value="save">
+			<input id="savebtn" class="btn" type="submit" value="Save">
 		</form>
-<?php if (time() - $_SESSION['save'][1] <= 600) { ?>
+<?php if (time() - $_SESSION['save'][3] <= 600) { ?>
 		<form method="post" action="./load.php">
-			<input type="submit" value="load">
+			<input id="loadbtn" class="btn" type="submit" value="<?php echo 'Load: '.($_SESSION['save'][0] + $_SESSION['save'][1]); ?>">
 		</form>
 <?php } ?>
-		<center>
-		<h1>Baskin Robbins 31</h1>
-		<form method="post" action="">
+		<center><div id="board">
+		<img id="logo" src="./BR31_logo.png">
+		<form method="post" action="./process.php">
 		<?php //output
-			echo 'Count: '.$_SESSION['count'].'<br>'; //current count value
-			echo 'cpu: '; //cpu answer
-			if ($_SESSION['start']) { //if game is in progress
+			echo 'count: '.$count.'<br>'; //current count value
+			echo '<span>cpu</span>: '; //cpu answer
+			if ($count) { //if game is in progress
 				for ($i = 0; $i < $ans; $i++) {
 					if ($i) echo ', ';
-					echo ($_SESSION['count'] + $i + 1);
+					echo ($count + $i + 1);
 				}
 				echo '<br>';
-				$_SESSION['count'] += $ans;
-				echo '<br>Count: '.$_SESSION['count'].'<br>'; //fixed count value
+				echo '<br>count: '.($count += $ans).'<br>'; //fixed count value
 			}
 			else { //if game started now
 				echo 'Your turn.<br>';
 			}
 
 			if (!$f) { //if game didn't end
-				echo ($_SESSION['count'] + 1).'<input type="radio" name="input" value="1"/>';
-				if ($_SESSION['count'] < 30) echo ($_SESSION['count'] + 2).'<input type="radio" name="input" value="2"/>';
-				if ($_SESSION['count'] < 29) echo ($_SESSION['count'] + 3).'<input type="radio" name="input" value="3"/>';
-				echo '<br><input type="submit" value="enter">';
+				echo '<button class="nbtn" name="input" value="1">'.($count + 1).'</button>';
+				if ($count < 30) echo '<button class="nbtn" name="input" value="2">'.($count + 2).'</button>';
+				if ($count < 29) echo '<button class="nbtn" name="input" value="3">'.($count + 3).'</button>';
 			}
 			else if ($f == 1) { //if win
 				echo 'You Win!';
@@ -79,5 +60,6 @@
 			}
 		?>
 		</form>
-	</center></body>
+		</div></center>
+	</body>
 </html>
